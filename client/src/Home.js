@@ -6,14 +6,47 @@ import video from "./Components/video-test/minecraft.mp4";
 import VideoCarousel from "./Components/VideoCarousel";
 
 const Home = () => {
-  const [file, setFile] = useState();
+  const [files, setFiles] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Create a FormData object to send files
+    // let selected_files = [];
+    // for (const file of files) {
+    //   const formData = new FormData();
+    //   console.log(file);
+    //   formData.append("uploaded_files", file);
+    //   selected_files.push(formData);
+    // }
+
+    const formData = new FormData();
+    formData.append("uploaded_files", files[0]);
+
+    try {
+      // Send the FormData to the backend
+      const response = await fetch("http://localhost:8000/upload_pptx/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Files uploaded successfully");
+        // Optionally, you can reset the input after successful upload
+        setFiles([]);
+      } else {
+        console.error("File upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading files", error);
+    }
   };
 
-  const handleOnChange = async (e) => {
-    setFile(e.target.files[0]);
+  // handle when user adds more files
+  const handleOnChange = (e) => {
+    const selectedFiles = e.target.files;
+    const filesArray = Array.from(selectedFiles);
+    setFiles((prevFiles) => [...prevFiles, ...filesArray]);
   };
 
   const videoTest = {
@@ -23,7 +56,6 @@ const Home = () => {
 
   return (
     <>
-      <Navbar></Navbar>
       <div>
         <h1>Welcome!</h1>
 
@@ -35,7 +67,7 @@ const Home = () => {
       </form>
 
       {/* scroll carousel test */}
-      <VideoCarousel videos={[videoTest, videoTest, videoTest]} />
+      {/* <VideoCarousel videos={[videoTest, videoTest, videoTest]} /> */}
     </>
   );
 };
