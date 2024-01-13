@@ -9,8 +9,8 @@ import os
 
 app = FastAPI()
 
-COHERE_API_KEY = os.environ["COHERE_API_KEY"]
-co = cohere.Client(COHERE_API_KEY)
+# COHERE_API_KEY = os.environ["COHERE_API_KEY"]
+# co = cohere.Client(COHERE_API_KEY)
 
 # Set up CORS middleware
 app.add_middleware(
@@ -80,20 +80,20 @@ async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
     except Exception as e:
         return {"success": False, "error_message": str(e)}
     
-@app.get("/generate_response/")
-async def generate_response(chat_history: List[map], new_prompt: str):
-    try:
-        response = co.chat(
-            message=new_prompt, 
-            chat_history=chat_history,
-            model="command", 
-            temperature=0.9
-        )
+# @app.get("/generate_response/")
+# async def generate_response(chat_history: List[map], new_prompt: str):
+#     try:
+#         response = co.chat(
+#             message=new_prompt, 
+#             chat_history=chat_history,
+#             model="command", 
+#             temperature=0.9
+#         )
 
-        answer = response.text
+#         answer = response.text
         
-        return {"success": True, "response": answer}
-    except Exception as e:
-        return {"success": False, "error_message": str(e)}
+#         return {"success": True, "response": answer}
+#     except Exception as e:
+#         return {"success": False, "error_message": str(e)}
 
 

@@ -5,7 +5,7 @@ import asyncio
 
 #content is 2d array of strings
 #outputs string of content followed by list of documents
-async def grabTopics(content):
+def grabTopics(content):
     documents = []
     for j in content[1]:
         documents.append({"title": content[0], "snippet": j})
@@ -17,7 +17,7 @@ async def grabTopics(content):
     dirty = generate.text.replace("```", "").replace("json", "")
     return json.loads(dirty)
 
-async def genContent(topic,content):
+def genContent(topic,content):
     documents = []
     for j in content[1]:
         documents.append({"title": content[0], "snippet": j})
