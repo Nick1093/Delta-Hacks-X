@@ -1,34 +1,12 @@
 import React, { useState } from "react";
 
 import Navbar from "./Components/Navbar";
-// nM8bIvLjiaisgUUQJJj2DtTU30Q
+
 const Home = () => {
   const [file, setFile] = useState();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!file) {
-      console.log("No file selected");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "test-react-uploads-unsigned");
-    formData.append("api_key", "893612613169993");
-
-    const results = await fetch(
-      "https://api.cloudinary.com/v1_1/dnogijm4l/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    // Process the results as needed
-    const response = await results.json();
-    console.log(response);
   };
 
   const handleOnChange = async (e) => {
