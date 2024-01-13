@@ -1,4 +1,4 @@
-#!/Users/mac/Desktop/Projects/delta-hacks/server/myenv/bin/python3.11
+#!/Users/mac/Desktop/Projects/Delta-Hacks-X/server/myenv/bin/python
 
 ##############################################################################
 #
