@@ -41,7 +41,7 @@ const Home = () => {
 
   const videoTest = {
     video: video,
-    transcript: "This is a test transcript",
+    transcript: "The sun is approximately 93 million miles (or about 150 million kilometers) away from Earth.",
   }
 
   return (

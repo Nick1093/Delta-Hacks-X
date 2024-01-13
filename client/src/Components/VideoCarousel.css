@@ -44,8 +44,20 @@
 }
 .video-carousel .video-container .transcript{
     position: absolute;
-
+    
     /* width: 100%; */
     pointer-events: none;
     color: #ffffff00;
+}
+.video-carousel .video-container .display-text{
+    position: absolute;
+    z-index: 10;
+    -webkit-text-stroke: 2px black;
+    font-weight: bold;
+    font-size: 2rem;
+
+    border-style:dotted;
+    border: 1px #000000;
+
+    text-align: center;
 }
