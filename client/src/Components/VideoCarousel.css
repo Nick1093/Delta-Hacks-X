@@ -1,0 +1,51 @@
+.video-carousel{
+    height: 70vh;
+    aspect-ratio: 9/16;
+    margin: 1rem;
+    
+    position: relative;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+    
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+
+    border-radius: 1rem;
+    /* border-style: dotted; */
+    border-width: 2px;
+    border-color: #000000;
+}
+
+.video-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.video-carousel .video-container{
+    height: 100%;
+    width: 100%;
+
+    border-radius: 1rem;
+    overflow: hidden;
+    scroll-snap-align: start;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin-bottom: 2rem;
+}
+
+.video-carousel .video-container video{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    scroll-snap-align: start;
+}
+.video-carousel .video-container .transcript{
+    position: absolute;
+
+    /* width: 100%; */
+    pointer-events: none;
+    color: #ffffff00;
+}
