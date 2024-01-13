@@ -1,10 +1,11 @@
 import cohere
 co = cohere.Client("OQt9Xru2qok3Wp5xIcHIogIPhvbwCTHavw0PVq6Q")
 import json
+import asyncio
 
 #content is 2d array of strings
 #outputs string of content followed by list of documents
-def grabTopics(content):
+async def grabTopics(content):
     documents = []
     for j in content[1]:
         documents.append({"title": content[0], "snippet": j})
@@ -16,7 +17,7 @@ def grabTopics(content):
     dirty = generate.text.replace("```", "").replace("json", "")
     return json.loads(dirty)
 
-def genContent(topic,content):
+async def genContent(topic,content):
     documents = []
     for j in content[1]:
         documents.append({"title": content[0], "snippet": j})
