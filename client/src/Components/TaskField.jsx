@@ -14,11 +14,11 @@ const handleDismiss = (e) => {
     task.style.pointerEvents = 'none'
 }
 
-const Task = ({title}) =>{
+const Task = ({ title }) => {
     return (
         <div className="task">
 
-            <img className="icon" src = {task_icon}></img>
+            <img className="icon" src={task_icon}></img>
             <div className='task-info'>
                 <h2>{title}</h2>
                 <div className="actions">
@@ -27,24 +27,27 @@ const Task = ({title}) =>{
                 </div>
             </div>
         </div>
-    
-    )
-} 
 
-const TaskField = () => {
+    )
+}
+
+const TaskField = ({ tasks }) => {
     return (
         <div className="task-field">
             <div className='title'>
                 <h1>Tasks 🐒</h1>
                 <div className="caption">
-                    [ <p id = 'suggestion-num'>3</p> ] Suggested Tasks
+                    [ <p id='suggestion-num'>3</p> ] Suggested Tasks
                 </div>
             </div>
 
             <div className="tasks">
-                <Task title = 'Try brightening specific areas of the video'/>
-                <Task title = 'Create contrast between different elements' />
-                <Task title = 'Experiment with curves to adjust lighting' />
+                {tasks.map((task) =>
+                    <Task title={task} />
+                )}
+                {/* <Task title='Try brightening specific areas of the video' />
+                <Task title='Create contrast between different elements' />
+                <Task title='Experiment with curves to adjust lighting' /> */}
             </div>
         </div>
     )

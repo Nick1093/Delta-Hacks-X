@@ -100,6 +100,8 @@ const closeChat = () => {
     // closeModal()
 }
 
+const [tasks, setTasks] = useState(['1', '2', '3'])
+
 // __________  task __________ modal
 const openTasks = () => {
     openModal()
@@ -135,7 +137,7 @@ const VideoApp = () => {
                     <ChatField />
                 </div>
                 <div className="tasks">
-                    <TaskField />
+                    <TaskField tasks={tasks} />
                 </div>
             </div>
 
