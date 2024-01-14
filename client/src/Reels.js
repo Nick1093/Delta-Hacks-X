@@ -23,12 +23,10 @@ const Reels = () => {
       }
     };
 
-    // webSocket.send(JSON.stringify(reelsContent));
-
     webSocket.onmessage = (e) => {
       console.log("Message: ", e.data);
-      console.log(e.data);
-      setReelsContent(e.data);
+      const newData = e.data;
+      setReelsContent([...reelsContent, newData]);
       setLoading(false);
     };
 

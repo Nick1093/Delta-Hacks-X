@@ -3,15 +3,14 @@ from pptx import Presentation
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+import coTest
 import cohere
-import os
 import asyncio
 import json
-from WebSocket import ConnectionManager
+# from WebSocket import ConnectionManager
 # from coTest import *
 
 app = FastAPI()
-manager = ConnectionManager()
 
 # COHERE_API_KEY = os.environ["COHERE_API_KEY"]
 # co = cohere.Client(COHERE_API_KEY)
@@ -25,9 +24,51 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections = []
+    
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    async def send_personal_message(self, message: str, websocket: WebSocket):
+        await websocket.send_text(message)
+    
+    def disconnect(self, websocket: WebSocket):
+        self.active_connections.remove(websocket)
+    
+    # data received is an array ["element1", "element2"] where each element is a slide's worth of text
+    # this function should return 
+    async def generateContent(self, pptx_data):
+        return coTest.generate_reel_content(pptx_data)
+    
+    async def generate_and_send(self, scraped_content, websocket):
+        first_run = scraped_content["slides_content"][:len(scraped_content["slides_content"]) // 2]
+        new_reel_content = await self.generateContent(first_run)
+        await websocket.send_json({"title": scraped_content["title"], "reel_content": new_reel_content})
+
+manager = ConnectionManager()
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            reels_content = json.loads(data)
+            for scraped_content in reels_content:
+                asyncio.create_task(manager.generate_and_send(scraped_content, websocket))
+    except WebSocketDisconnect:
+        print("Error occurred, disconnecting...")
+        manager.disconnect(websocket)
+        await manager.broadcast("A client disconnected.")
+
 
 
 # helper method to extract text from each slide for the pptx
@@ -65,36 +106,6 @@ def extract_text_from_pptx(pptx_file):
         slide_data["slides_content"] = slides_content
 
     return slide_data
-
-
-# websocket
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-
-    try:
-        while True:
-            data = await websocket.receive_text()
-            # Parse JSON string back into an array
-            reels_content = json.loads(data)
-            await asyncio.sleep(0.1)
-            for scraped_content in reels_content:
-                # get back a object with the data we need
-                # print("Scraped content is: ", scraped_content)
-                first_run = scraped_content["slides_content"][:len(scraped_content["slides_content"])//2]
-                # second_run = scraped_content["slides_content"][len(scraped_content["slides_content"])//2:]
-                new_reel_content_1 = await manager.generateContent(first_run)
-                print("Content Generated: ", new_reel_content_1)
-                await websocket.send_json({"title": scraped_content["title"], "reel_content": new_reel_content_1})
-                # new_reel_content_2 = await manager.generateContent(second_run)
-                # print("Content Generated: ", new_reel_content_2)
-                # await websocket.send_json(new_reel_content_2)
-
-            
-    except WebSocketDisconnect:
-        print("Error occured, disconecting...")
-        manager.disconnect(websocket)
-        await manager.broadcast("A client disconnected.")
 
 @app.post("/upload_pptx/")
 async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
@@ -144,3 +155,24 @@ async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
             #     slides_content = extract_text_from_pptx("temp.pptx")
 
             #     reels_content.append(slides_content)
+    
+    # tasks = [asyncio.create_task(process_data(item, websocket)) for item in data]
+# websocket
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await manager.connect(websocket)
+
+#     try:
+#         while True:
+#             data = await websocket.receive_text()
+#             # Parse JSON string back into an array
+#             reels_content = json.loads(data)
+#             for scraped_content in reels_content:
+#                 first_run = scraped_content["slides_content"][:len(scraped_content["slides_content"])//2]
+#                 new_reel_content_1 = await manager.generateContent(first_run)
+#                 print("Content Generated: ", new_reel_content_1)
+#                 await websocket.send_json({"title": scraped_content["title"], "reel_content": new_reel_content_1})
+#     except WebSocketDisconnect:
+#         print("Error occured, disconecting...")
+#         manager.disconnect(websocket)
+#         await manager.broadcast("A client disconnected.")
