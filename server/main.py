@@ -13,8 +13,8 @@ from WebSocket import ConnectionManager
 app = FastAPI()
 manager = ConnectionManager()
 
-# COHERE_API_KEY = os.environ["COHERE_API_KEY"]
-# co = cohere.Client(COHERE_API_KEY)
+co = cohere.Client("OQt9Xru2qok3Wp5xIcHIogIPhvbwCTHavw0PVq6Q")
+
 
 # Set up CORS middleware
 app.add_middleware(
@@ -116,31 +116,21 @@ async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
     except Exception as e:
         return {"success": False, "error_message": str(e)}
     
-# @app.get("/generate_response/")
-# async def generate_response(chat_history: List[map], new_prompt: str):
-#     try:
-#         response = co.chat(
-#             message=new_prompt, 
-#             chat_history=chat_history,
-#             model="command", 
-#             temperature=0.9
-#         )
+@app.post("/generate_response/")
+async def generate_response(chat_history: List[dict], new_prompt: str):
+    try:
+        print("Chat history: ", chat_history)
+        response = co.chat(
+            message=new_prompt, 
+            chat_history=chat_history,
+            model="command-nightly", 
+            temperature=0.9
+        )
 
-#         answer = response.text
+        answer = response.text
+        print("ANSWERRRRRRRRRRRR",answer)
         
-#         return {"success": True, "response": answer}
-#     except Exception as e:
-#         return {"success": False, "error_message": str(e)}
-
-
-# content of the reels
-            # reels_content = []
-            # uploaded_files = await websocket.receive_json()
-            # for i in range(len(uploaded_files)):
-            #     with open("temp.pptx", "wb") as f:
-            #         f.write(uploaded_files[i].file.read())
-
-            #     # Extract text from the PowerPoint file
-            #     slides_content = extract_text_from_pptx("temp.pptx")
-
-            #     reels_content.append(slides_content)
+        return {"success": True, "response": answer}
+    except Exception as e:
+        return {"success": False, "error_message": str(e)}
+                
