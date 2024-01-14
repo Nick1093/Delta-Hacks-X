@@ -5,14 +5,14 @@ const Navbar = () => {
     <div className="w-11/12 h-30 flex flex-row space-x-2 items-start pb-5">
 
 
-      <div className=" flex items-center pl-6 justify-left rounded-[63px] bg-[#333543] w-1/4 h-full">
+      <div className=" flex items-center pl-6 justify-left rounded-[63px] bg-[#333543] w-1/5 h-full">
         <img className="pr-1 h-10 w-15" src={ape} />
 
-        <p className="text-white text-[30px] font-normal font-['PP Radio Grotesk']">ApeEducation</p>
+        <p className="text-white text-[30px] font-normal font-['PP Radio Grotesk']">Cota</p>
       </div>
 
 
-      <div className="pl-8 flex items-center justify-left rounded-[63px] bg-[#D9D9D9] w-1/2 h-full">
+      <div className="pl-8 flex items-center justify-left rounded-[63px] bg-[#D9D9D9] w-2/3 h-full">
         <input
           type="search"
           class="placeholder-zinc-700 relative m-0 block min-w-0 flex-auto rounded bg-transparent bg-clip-padding [text-zinc-700 text-[30px] font-normal font-['PP Radio Grotesk'] leading-[1.6] outline-none focus:border-transparent"

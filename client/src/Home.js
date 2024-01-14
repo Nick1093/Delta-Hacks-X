@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -16,6 +16,8 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(files)
 
     // Create a single FormData object to send all files
     const formData = new FormData();
@@ -56,6 +58,21 @@ const Home = () => {
     transcript: "This is a test transcript",
   };
 
+  const onDrop = useCallback(acceptedFiles => {
+    // Do something with the files
+    console.log(acceptedFiles)
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "pptx/*",
+    onDrop: (acceptedFiles) => {
+      console.log(files)
+      setFiles(
+        [...files, ...acceptedFiles]
+      )
+    },
+  })
+
   return (
     <>
       <div className="flex flex-col w-screen h-screen items-center justify-self-auto bg-[#17181d] justify-center">
@@ -64,7 +81,15 @@ const Home = () => {
         <DropZoneJS />
 
         <form onSubmit={handleSubmit}>
-          <input type="file" name="powerpoint" onChange={handleOnChange}></input>
+          {/* <input type="file" name="powerpoint" onChange={handleOnChange}></input> */}
+
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            }
+          </div>
+
           <button type="submit">Upload File</button>
         </form>
         <div >
