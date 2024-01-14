@@ -13,17 +13,15 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create a FormData object to send files
-    // let selected_files = [];
-    // for (const file of files) {
-    //   const formData = new FormData();
-    //   console.log(file);
-    //   formData.append("uploaded_files", file);
-    //   selected_files.push(formData);
-    // }
-
+    // Create a single FormData object to send all files
     const formData = new FormData();
-    formData.append("uploaded_files", files[0]);
+    for (const file of files) {
+      // Append each file under the same key "uploaded_files"
+      formData.append("uploaded_files", file);
+    }
+
+    // const formData = new FormData();
+    // formData.append("uploaded_files", files[0]);
 
     try {
       // Send the FormData to the backend
