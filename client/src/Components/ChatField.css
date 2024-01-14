@@ -1,0 +1,114 @@
+.chat-field{
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding:1.5rem;
+}
+
+.chat-field h1{
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.chat-field .input{
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.chat-field .input input{
+    height: 100%;
+    width: 100%;
+
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+
+    border-radius: 5rem;;
+    background-color: #CAC8C8;
+
+    padding:1rem;
+}
+
+.chat-field .input button{
+    height: 4rem;
+    aspect-ratio: 1/1;
+
+    border-radius: 50%;
+
+    margin: 0 0 0 1rem;
+
+    background-color: #CAC8C8;
+
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-field .input button img{
+    object-fit: contain;
+}
+
+.chat-field .conversation{
+    width: 100%;
+    height: 100%;
+    /* overflow-y: scroll; */
+    overflow-x: hidden;
+    padding: 1rem 0.5rem 1rem 0.5rem;
+}
+
+.chat-field .conversation::-webkit-scrollbar {
+    display: none;
+}
+
+
+.chat-field .conversation .bot{
+    position: relative;
+    width: 100%;
+    padding:0.3rem;
+    color: #CAC8C8;
+    padding-right: 3rem;
+
+    display: flex;
+    justify-self: flex-start;
+}
+
+.chat-field .conversation .user{
+    position: relative;
+    width: 100%;
+    padding:0.3rem;
+    padding-left: 3rem;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+.chat-field .conversation .bot .message{
+    border-radius: 1.5rem;
+
+    background-color: #454B68;
+    display: flex;
+    align-items: center;
+    padding:1rem;
+}
+
+.chat-field .conversation .user .message{
+    border-radius: 1.5rem;
+    border: 2px solid #454B68;
+    display: flex;
+    align-items: center;
+    padding:1rem;
+}

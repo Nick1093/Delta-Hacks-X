@@ -1,0 +1,100 @@
+.video-app{
+    position: relative;
+    height: 70vh;
+    aspect-ratio: 9/16;
+    /* aspect-ratio: 3/2; */
+
+    margin:1rem;
+
+    border-radius: 1rem;
+    border: 1px solid #000000;
+    /* overflow: hidden; */
+
+    display: flex;
+
+    background-color: #F5F5F5;
+
+    transition: all 0.5s ease-in-out;
+}
+
+.video-app .app-left{
+    position: relative;
+    height: 100%;
+}
+
+.video-app .video-carousel{
+    
+}
+
+/* ___________ left ___________  */
+.video-app .app-left .controls{
+    position: absolute;
+    bottom:0;
+    right:0;
+    margin:0.5rem;
+
+    transition: all 0.5s ease-in-out;
+
+    z-index: 100;
+
+    transform: translateX(125%);
+}
+
+.video-button{
+    margin: 0.5rem;
+}
+
+.video-button h3{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-button button{
+    height: 2.7rem;
+    aspect-ratio: 1/1;
+
+    background-color: #a5a5a524;
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    padding:0.8rem;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.video-button button img{
+    object-fit: contain;
+    height: 90%;
+}
+
+
+/* ___________ right ___________  */
+.video-app .app-right{
+    position: relative;
+    /* width: 65vh; */
+    width:100%;
+
+    /* background-color: #ffd3d3; */
+}
+.video-app .app-right .chat{
+    position: absolute;
+    height: 100%;
+    overflow: hidden;
+    /* background-color: #b7ffc1; */
+    display: block;
+    width: 100%;
+}
+.video-app .app-right .tasks{
+    display: block;
+    position: absolute;
+    height: 100%;
+    overflow: hidden;
+    /* background-color: #94b4ff; */
+
+    width: 100%;
+}

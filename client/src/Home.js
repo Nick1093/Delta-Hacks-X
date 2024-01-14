@@ -1,64 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Navbar from "./Components/Navbar";
 
-import video from "./Components/video-test/minecraft.mp4";
-import VideoCarousel from "./Components/VideoCarousel";
+import VideoApp from "./Components/VideoApp.jsx";
 
-// nM8bIvLjiaisgUUQJJj2DtTU30Q
+import DropZoneJS from "./Components/DropZone.js";
+import { useDropzone } from 'react-dropzone';
+
+
 const Home = () => {
-  const [file, setFile] = useState();
+  let navigate = useNavigate();
+
+  const [files, setFiles] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file) {
-      console.log("No file selected");
-      return;
+    console.log(files)
+
+    // Create a single FormData object to send all files
+    const formData = new FormData();
+    for (const file of files) {
+      // Append each file under the same key "uploaded_files"
+      formData.append("uploaded_files", file);
     }
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "test-react-uploads-unsigned");
-    formData.append("api_key", "893612613169993");
-
-    const results = await fetch(
-      "https://api.cloudinary.com/v1_1/dnogijm4l/image/upload",
-      {
+    try {
+      const response = await fetch("http://localhost:8000/upload_pptx/", {
         method: "POST",
         body: formData,
+      });
+
+      if (response.ok) {
+        console.log("Files uploaded successfully");
+        // If you need to pass data to the Reels component, do it here
+        const reelsData = await response.json();
+        console.log(reelsData);
+        navigate("/reels", { state: { reelsData: reelsData.slides_content } });
+      } else {
+        console.error("File upload failed");
       }
-    );
-
-    // Process the results as needed
-    const response = await results.json();
-    console.log(response);
+    } catch (error) {
+      console.error("Error uploading files", error);
+    }
   };
 
-  const handleOnChange = async (e) => {
-    setFile(e.target.files[0]);
+  // handle when user adds more files
+  const handleOnChange = (e) => {
+    const selectedFiles = e.target.files;
+    const filesArray = Array.from(selectedFiles);
+    setFiles((prevFiles) => [...prevFiles, ...filesArray]);
   };
 
+<<<<<<< HEAD
   const videoTest = {
     video: video,
     transcript: "The sun is approximately 93 million miles (or about 150 million kilometers) away from Earth.",
   }
+=======
+  const onDrop = useCallback(acceptedFiles => {
+    // Do something with the files
+    console.log(acceptedFiles)
+  }, [])
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: "pptx/*",
+    onDrop: (acceptedFiles) => {
+      console.log(files)
+      setFiles(
+        [...files, ...acceptedFiles]
+      )
+    },
+  })
+>>>>>>> main
 
   return (
     <>
-      <Navbar></Navbar>
-      <div>
-        <h1>Welcome!</h1>
+      <div className="flex flex-col w-screen h-screen items-center justify-self-auto bg-[#17181d] justify-center">
+        <Navbar />
 
-        <h2>Please drag and drop what we're learning about today!</h2>
+        <DropZoneJS />
+
+        <form onSubmit={handleSubmit}>
+          {/* <input type="file" name="powerpoint" onChange={handleOnChange}></input> */}
+
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            {
+              <p>Drag 'n' drop some files here, or click to select files</p>
+            }
+          </div>
+
+          <button type="submit">Upload File</button>
+        </form>
+        <div >
+
+
+        </div >
+
       </div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" name="powerpoint" onChange={handleOnChange}></input>
-        <button type="submit">Upload File</button>
-      </form>
 
-      {/* scroll carousel test */}
-      <VideoCarousel videos = {[videoTest, videoTest, videoTest]} />
+      <VideoApp />
+
     </>
   );
 };
