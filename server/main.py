@@ -63,7 +63,7 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             reels_content = json.loads(data)
             for scraped_content in reels_content:
-                asyncio.create_task(manager.generate_and_send(scraped_content, websocket))
+                await manager.generate_and_send(scraped_content, websocket)
     except WebSocketDisconnect:
         print("Error occurred, disconnecting...")
         manager.disconnect(websocket)
