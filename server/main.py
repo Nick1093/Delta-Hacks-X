@@ -1,13 +1,16 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, WebSocket, WebSocketDisconnect
 from pptx import Presentation
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import cohere
 import os
+import json
+from WebSocket import ConnectionManager
 # from coTest import *
 
 app = FastAPI()
+manager = ConnectionManager()
 
 # COHERE_API_KEY = os.environ["COHERE_API_KEY"]
 # co = cohere.Client(COHERE_API_KEY)
@@ -24,6 +27,7 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 # helper method to extract text from each slide for the pptx
 def extract_text_from_pptx(pptx_file):
@@ -54,9 +58,27 @@ def extract_text_from_pptx(pptx_file):
 
         slides_content.append(slide_text.strip())  # Add the slide's content to the array
 
-    # print("Size of slides content: ", len(slides_content))
-
     return slides_content
+
+# websocket
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Parse JSON string back into an array
+            reels_content = json.loads(data)
+            print("Received array:", reels_content)
+            for scraped_content in reels_content:
+                # get back a object with the data we need
+                new_reel_content = manager.generateContent(scraped_content)
+                await websocket.send_json(new_reel_content)
+            
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast("A client disconnected.")
 
 
 @app.post("/upload_pptx/")
@@ -97,3 +119,14 @@ async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
 #         return {"success": False, "error_message": str(e)}
 
 
+# content of the reels
+            # reels_content = []
+            # uploaded_files = await websocket.receive_json()
+            # for i in range(len(uploaded_files)):
+            #     with open("temp.pptx", "wb") as f:
+            #         f.write(uploaded_files[i].file.read())
+
+            #     # Extract text from the PowerPoint file
+            #     slides_content = extract_text_from_pptx("temp.pptx")
+
+            #     reels_content.append(slides_content)
