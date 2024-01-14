@@ -32,7 +32,9 @@ def read_root():
 # helper method to extract text from each slide for the pptx
 def extract_text_from_pptx(pptx_file):
     prs = Presentation(pptx_file)
+    ppt_title = prs.core_properties.title
     slides_content = []  # Array to hold the content of each slide
+    slide_data = {"title": ppt_title, "slides_content":[]}
 
     try:
         for slide in prs.slides:
@@ -40,10 +42,12 @@ def extract_text_from_pptx(pptx_file):
             for shape in slide.shapes:
                 if hasattr(shape, "text"):
                     slide_text += shape.text + "\n"  # Append text from each shape to the slide text
-            slide_text = slide_text.strip()
+                slide_text = slide_text.strip()
 
             if slide_text:  # Check if the slide text is not empty
                 slides_content.append(slide_text)  # Add the slide's content to the array
+            
+        slide_data["slides_content"] = slides_content
     except:
         try:
             for slide in prs.slides:
@@ -57,8 +61,9 @@ def extract_text_from_pptx(pptx_file):
             print("Content retrieval unsuccessful")
 
         slides_content.append(slide_text.strip())  # Add the slide's content to the array
+        slide_data["slides_content"] = slides_content
 
-    return slides_content
+    return slide_data
 
 # websocket
 @app.websocket("/ws")
@@ -70,10 +75,10 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             # Parse JSON string back into an array
             reels_content = json.loads(data)
-            print("Received array:", reels_content)
             for scraped_content in reels_content:
                 # get back a object with the data we need
-                new_reel_content = manager.generateContent(scraped_content)
+                # print("Scraped content is: ", scraped_content)
+                new_reel_content = await manager.generateContent(scraped_content)
                 await websocket.send_json(new_reel_content)
             
     except WebSocketDisconnect:
@@ -93,9 +98,9 @@ async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
                 f.write(uploaded_files[i].file.read())
 
             # Extract text from the PowerPoint file
-            slides_content = extract_text_from_pptx("temp.pptx")
+            powerpoint_content = extract_text_from_pptx("temp.pptx")
 
-            reels_content.append(slides_content)
+            reels_content.append(powerpoint_content)
 
         #Return the extracted text as a response
         return {"success": True, "slides_content": reels_content}
