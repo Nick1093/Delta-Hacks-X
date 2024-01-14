@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 import Navbar from "./Components/Navbar";
 
-import video from "./Components/video-test/minecraft.mp4";
+import VideoApp from "./Components/VideoApp.jsx";
+
 import DropZoneJS from "./Components/DropZone.js";
 import { useDropzone } from 'react-dropzone';
 
@@ -53,11 +54,6 @@ const Home = () => {
     setFiles((prevFiles) => [...prevFiles, ...filesArray]);
   };
 
-  const videoTest = {
-    video: video,
-    transcript: "This is a test transcript",
-  };
-
   const onDrop = useCallback(acceptedFiles => {
     // Do something with the files
     console.log(acceptedFiles)
@@ -94,13 +90,12 @@ const Home = () => {
         </form>
         <div >
 
-          {/* scroll carousel test */}
-          {/* <VideoCarousel videos={[videoTest, videoTest, videoTest]} /> */}
+
         </div >
 
       </div>
 
-
+      <VideoApp />
 
     </>
   );
