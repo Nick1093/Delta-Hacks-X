@@ -1,167 +1,56 @@
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import ape from "../imgs/drawing.png"
 
 const Navbar = () => {
   return (
-    <Disclosure as="nav" className="bg-gray-800">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-gray-900 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+    <div className="w-11/12 h-30 flex flex-row space-x-2 items-start pb-5">
 
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm text-gray-700"
-                            )}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
-            </div>
-          </div>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+      <div className=" flex items-center pl-6 justify-left rounded-[63px] bg-[#333543] w-1/4 h-full">
+        <img className="pr-1 h-10 w-15" src={ape} />
+
+        <p className="text-white text-[30px] font-normal font-['PP Radio Grotesk']">ApeEducation</p>
+      </div>
+
+
+      <div className="pl-8 flex items-center justify-left rounded-[63px] bg-[#D9D9D9] w-1/2 h-full">
+        <input
+          type="search"
+          class="placeholder-zinc-700 relative m-0 block min-w-0 flex-auto rounded bg-transparent bg-clip-padding [text-zinc-700 text-[30px] font-normal font-['PP Radio Grotesk'] leading-[1.6] outline-none focus:border-transparent"
+          placeholder="Search"
+        />
+
+        <span
+          class="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
+          id="basic-addon2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="h-7 w-7">
+            <path
+              fill-rule="evenodd"
+              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+              clip-rule="evenodd" />
+          </svg>
+        </span>
+      </div>
+
+      <div className="pl-8 flex items-center justify-left rounded-[63px] bg-[#D9D9D9] w-1/4 h-full gap-x-32">
+        <p className="[text-zinc-700 text-[30px] font-normal font-['PP Radio Grotesk']">Menu</p>
+        <svg width="20" height="18" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="&#240;&#159;&#166;&#134; emoji &#34;sparkles&#34;">
+            <g id="Group">
+              <path id="Vector" d="M12.1706 4.35957C11.7521 4.18663 11.4232 3.85515 11.2588 3.45163L9.89856 0.3675C9.64444 -0.1225 8.91202 -0.1225 8.67284 0.3675L7.3126 3.45163C7.13323 3.85515 6.80439 4.17221 6.4008 4.35957L4.66688 5.10898C4.15865 5.35398 4.15865 6.06017 4.66688 6.30517L6.4008 7.05458C6.81933 7.22752 7.14819 7.55899 7.3126 7.96252L8.67284 11.061C8.92696 11.5511 9.65939 11.5511 9.89856 11.061L11.2588 7.96252C11.4381 7.55899 11.767 7.24194 12.1706 7.05458L13.9046 6.30517C14.4127 6.06017 14.4127 5.35398 13.9046 5.10898L12.1706 4.35957Z" fill="#212121" />
+              <path id="Vector_2" d="M33.6777 13.6494C32.435 13.0961 31.4523 12.077 30.9321 10.825L26.8424 1.15747C26.091 -0.385825 23.909 -0.385825 23.1576 1.15747L19.0678 10.825C18.5333 12.077 17.5506 13.0961 16.3223 13.6494L11.1488 15.9936C9.61705 16.7506 9.61705 18.9637 11.1488 19.7207L16.3223 22.0648C17.565 22.6181 18.5477 23.6373 19.0678 24.8893L23.1576 34.5568C23.909 36.1001 26.091 36.1001 26.8424 34.5568L30.9321 24.8893C31.4667 23.6373 32.4494 22.6181 33.6777 22.0648L38.8511 19.7207C40.383 18.9637 40.383 16.7506 38.8511 15.9936L33.6777 13.6494Z" fill="#212121" />
+              <path id="Vector_3" d="M8.97299 23.3291C9.20247 23.8888 9.62092 24.3225 10.1474 24.5744L12.3611 25.6099C13.0224 25.9458 13.0224 26.9112 12.3611 27.2471L10.1474 28.2826C9.62092 28.5345 9.20247 28.9822 8.97299 29.5279L7.21823 33.7819C6.89425 34.4535 5.96288 34.4535 5.63891 33.7819L3.88414 29.5279C3.65467 28.9682 3.23621 28.5345 2.70979 28.2826L0.49606 27.2471C-0.165353 26.9112 -0.165353 25.9458 0.49606 25.6099L2.70979 24.5744C3.23621 24.3225 3.65467 23.8748 3.88414 23.3291L5.63891 19.0751C5.96288 18.4035 6.89425 18.4035 7.21823 19.0751L8.97299 23.3291Z" fill="#212121" />
+            </g>
+          </g>
+        </svg>
+
+
+      </div>
+
+    </div>
   );
 };
 

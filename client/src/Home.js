@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
 
 import video from "./Components/video-test/minecraft.mp4";
-import VideoCarousel from "./Components/VideoCarousel";
+import DropZoneJS from "./Components/DropZone.js";
+import { useDropzone } from 'react-dropzone';
+
 
 const Home = () => {
   const [files, setFiles] = useState([]);
@@ -56,18 +58,25 @@ const Home = () => {
 
   return (
     <>
-      <div>
-        <h1>Welcome!</h1>
+      <div className="flex flex-col w-screen h-screen items-center justify-self-auto bg-[#17181d] justify-center">
+        <Navbar />
 
-        <h2>Please drag and drop what we're learning about today!</h2>
+        <DropZoneJS />
+
+        <form onSubmit={handleSubmit}>
+          <input type="file" name="powerpoint" onChange={handleOnChange}></input>
+          <button type="submit">Upload File</button>
+        </form>
+        <div >
+
+          {/* scroll carousel test */}
+          {/* <VideoCarousel videos={[videoTest, videoTest, videoTest]} /> */}
+        </div >
+
       </div>
-      <form onSubmit={handleSubmit}>
-        <input type="file" name="powerpoint" onChange={handleOnChange}></input>
-        <button type="submit">Upload File</button>
-      </form>
 
-      {/* scroll carousel test */}
-      {/* <VideoCarousel videos={[videoTest, videoTest, videoTest]} /> */}
+
+
     </>
   );
 };
