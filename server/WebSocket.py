@@ -14,5 +14,7 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
     
-    async def generateContent(pptx_data):
-        print("do something")
+    # data received is an array ["element1", "element2"] where each element is a slide's worth of text
+    # this function should return 
+    async def generateContent(self, pptx_data):
+        print(pptx_data)
