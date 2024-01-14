@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Navbar from "./Components/Navbar";
 
@@ -6,6 +8,8 @@ import video from "./Components/video-test/minecraft.mp4";
 import VideoCarousel from "./Components/VideoCarousel";
 
 const Home = () => {
+  let navigate = useNavigate();
+
   const [files, setFiles] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -18,11 +22,7 @@ const Home = () => {
       formData.append("uploaded_files", file);
     }
 
-    // const formData = new FormData();
-    // formData.append("uploaded_files", files[0]);
-
     try {
-      // Send the FormData to the backend
       const response = await fetch("http://localhost:8000/upload_pptx/", {
         method: "POST",
         body: formData,
@@ -30,8 +30,10 @@ const Home = () => {
 
       if (response.ok) {
         console.log("Files uploaded successfully");
-        // Optionally, you can reset the input after successful upload
-        setFiles([]);
+        // If you need to pass data to the Reels component, do it here
+        const reelsData = await response.json();
+        console.log(reelsData);
+        navigate("/reels", { state: { reelsData: reelsData.slides_content } });
       } else {
         console.error("File upload failed");
       }
