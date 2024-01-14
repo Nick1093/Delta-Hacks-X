@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from typing import List
 import cohere
 import os
+import asyncio
 import json
 from WebSocket import ConnectionManager
 # from coTest import *
@@ -65,6 +66,7 @@ def extract_text_from_pptx(pptx_file):
 
     return slide_data
 
+
 # websocket
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -75,20 +77,27 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             # Parse JSON string back into an array
             reels_content = json.loads(data)
+            await asyncio.sleep(0.1)
             for scraped_content in reels_content:
                 # get back a object with the data we need
                 # print("Scraped content is: ", scraped_content)
-                new_reel_content = await manager.generateContent(scraped_content)
-                await websocket.send_json(new_reel_content)
+                first_run = scraped_content["slides_content"][:len(scraped_content["slides_content"])//2]
+                # second_run = scraped_content["slides_content"][len(scraped_content["slides_content"])//2:]
+                new_reel_content_1 = await manager.generateContent(first_run)
+                print("Content Generated: ", new_reel_content_1)
+                await websocket.send_json({"title": scraped_content["title"], "reel_content": new_reel_content_1})
+                # new_reel_content_2 = await manager.generateContent(second_run)
+                # print("Content Generated: ", new_reel_content_2)
+                # await websocket.send_json(new_reel_content_2)
+
             
     except WebSocketDisconnect:
+        print("Error occured, disconecting...")
         manager.disconnect(websocket)
         await manager.broadcast("A client disconnected.")
 
-
 @app.post("/upload_pptx/")
 async def upload_pptx(uploaded_files: List[UploadFile] = File(...)):
-    print(uploaded_files)
     try:
         # content of the reels
         reels_content = []
